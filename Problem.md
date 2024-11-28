@@ -1,6 +1,27 @@
 [](#Programming-Assignment "Programming-Assignment")Programming Assignment
 --------------------------------------------------------------------------
 
+### [](#Update "Update")Update
+
+**2024/11/23:**  
+Output format:  
+And print out your result.
+
+**Test:**  
+The test time limit is 1 min per test case.
+
+**2024/11/17:**  
+Test case 2 input:
+
+    ([1,0,2,1]*[1,2,0,1])*([2,1,1,0]*[1,1,1,2]) (old)
+    (([1,0,2,1]*[1,2,0,1])*([2,1,1,0]*[1,1,1,2])) (new)
+    
+
+Input format:  
+ai∈N, where ai is the element in the input matrix (new)  
+Output format:  
+ai≤231−1, where ai is the element in the output matrix (new)
+
 ### [](#Description "Description")Description
 
 In this problem, you need to write a program to solve 2×2 matrix multiplication. Following are some rules:
@@ -31,7 +52,7 @@ or
 
 ### [](#Test "Test")Test
 
-We will test your program in Ubuntu 22.04.5 LTS as following.
+We will test your program in Ubuntu 22.04.5 LTS as following. The test time limit is 1 min per test case.(2024/11/23 update)
 
     ./a.out < test_case.in
     
@@ -59,10 +80,13 @@ The input contains a string s with only "0-9\*,()\[\]". Following are some const
 *   0<s.length() <1000
 *   All test cases are valid
 *   Each "\*" will always be paired with a pair of brackets
+*   ai∈N, where ai is the element in the input matrix (2024/11/17 update)
 
 ### [](#Output-format "Output-format")Output format
 
-The output is the martix representation in this problem, consisting of 4 numbers separated by a comma enclosed within square brackets.
+The output is the martix representation in this problem, consisting of 4 numbers separated by a comma enclosed within square brackets. And print out your result.(2024/11/23 update)
+
+*   ai≤231−1, where ai is the element in the output matrix (2024/11/17 update)
 
 ### [](#Hint "Hint")Hint
 
@@ -89,9 +113,9 @@ Explaination
 
 \[1111\]
 
-Input
+Input (2024/11/17 update)
 
-    ([1,0,2,1]*[1,2,0,1])*([2,1,1,0]*[1,1,1,2])
+    (([1,0,2,1]*[1,2,0,1])*([2,1,1,0]*[1,1,1,2]))
     
 
 Output

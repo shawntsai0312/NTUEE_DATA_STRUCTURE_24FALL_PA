@@ -1,18 +1,16 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <vector>
+#include <stack>
 
 using namespace std;
 
-struct Matrix
-{
+struct Matrix {
     int a, b, c, d;
 };
 
 // Function to perform matrix multiplication
-Matrix multiply(const Matrix &m1, const Matrix &m2)
-{
+Matrix multiply(const Matrix &m1, const Matrix &m2) {
     Matrix result;
     result.a = m1.a * m2.a + m1.b * m2.c;
     result.b = m1.a * m2.b + m1.b * m2.d;
@@ -22,8 +20,7 @@ Matrix multiply(const Matrix &m1, const Matrix &m2)
 }
 
 // Function to parse a matrix from a string
-Matrix parseMatrix(const string &matrixStr)
-{
+Matrix parseMatrix(const string &matrixStr) {
     stringstream ss(matrixStr);
     int a, b, c, d;
     char temp;
@@ -31,53 +28,64 @@ Matrix parseMatrix(const string &matrixStr)
     return {a, b, c, d};
 }
 
-// Function to process the input expression and calculate the result
-vector<Matrix> evaluateExpression(const string &expression)
-{
-    // cout << expression << endl;
-    vector<Matrix> matrixArray;
+// Function to process the input expression and calculate the result using a stack
+Matrix evaluateExpression(const string &expression) {
+    stack<Matrix> matrixStack;  // Stack to store matrices
+    stack<char> operatorStack; // Stack to store operators ('(' or '*')
 
     int i = 0;
-    while (i < expression.size())
-    {
+    while (i < expression.size()) {
         char ch = expression[i];
-        // cout << i << " " << ch << endl;
-        if (ch == '[')
-        {
-            // Start of a matrix, find the matrix and push to stack
+
+        if (ch == '[') {
+            // Parse the matrix
             int start = i + 1;
             int end = expression.find(']', start);
             string matrixStr = expression.substr(start, end - start);
-            // cout << matrixStr << endl;
             Matrix matrix = parseMatrix(matrixStr);
-            matrixArray.push_back(matrix);
+            matrixStack.push(matrix);
             i = end + 1;
-        }
-        else
-        {
+        } else if (ch == '(' || ch == '*') {
+            // Push the operator to the stack
+            operatorStack.push(ch);
+            i++;
+        } else if (ch == ')') {
+            // Perform multiplication until a '(' is encountered
+            while (!operatorStack.empty() && operatorStack.top() == '*') {
+                operatorStack.pop();
+                Matrix m2 = matrixStack.top();
+                matrixStack.pop();
+                Matrix m1 = matrixStack.top();
+                matrixStack.pop();
+                matrixStack.push(multiply(m1, m2));
+            }
+            // Pop the '('
+            operatorStack.pop();
+            i++;
+        } else {
             i++;
         }
     }
 
-    return matrixArray;
+    // Perform any remaining multiplications
+    while (!operatorStack.empty()) {
+        operatorStack.pop();
+        Matrix m2 = matrixStack.top();
+        matrixStack.pop();
+        Matrix m1 = matrixStack.top();
+        matrixStack.pop();
+        matrixStack.push(multiply(m1, m2));
+    }
+
+    return matrixStack.top();
 }
 
-int main()
-{
+int main() {
     // Input the matrix expression
     string expression;
-    while (getline(cin, expression))
-    {
+    while (getline(cin, expression)) {
         // Evaluate the expression and output the result
-        vector<Matrix> matrixArray = evaluateExpression(expression);
-        Matrix result = matrixArray[0];
-
-        // cout << "saved" << endl;
-        // cout << matrixArray.size() << endl;
-        for (int i = 1; i < matrixArray.size(); i++){
-            // cout << "[" << matrixArray[i].a << "," << matrixArray[i].b << "," << matrixArray[i].c << "," << matrixArray[i].d << "]" << endl;
-            result = multiply(result, matrixArray[i]);
-        }
+        Matrix result = evaluateExpression(expression);
         cout << "[" << result.a << "," << result.b << "," << result.c << "," << result.d << "]" << endl;
     }
     return 0;
