@@ -1,10 +1,10 @@
 #include <iostream>
-#include <string>
-#include <sstream>
+#include <cstring> // For strlen, strncpy, etc.
 
 using namespace std;
 
-#define STACK_SIZE 1000 // max of input string size
+#define STACK_SIZE 1000 // Max size for input string and stacks
+#define MAX_EXPR_SIZE 1000 // Maximum size of an expression
 
 struct Matrix {
     int a, b, c, d;
@@ -68,32 +68,40 @@ Matrix multiply(const Matrix &m1, const Matrix &m2) {
     return result;
 }
 
-// Function to parse a matrix from a string
-Matrix parseMatrix(const string &matrixStr) {
-    stringstream ss(matrixStr);
+// Function to parse a matrix from a C-style string
+Matrix parseMatrix(const char *matrixStr, int length) {
+    Matrix result;
     int a, b, c, d;
-    char temp;
-    ss >> a >> temp >> b >> temp >> c >> temp >> d;
-    return {a, b, c, d};
+    sscanf(matrixStr, "%d,%d,%d,%d", &a, &b, &c, &d);
+    result.a = a;
+    result.b = b;
+    result.c = c;
+    result.d = d;
+    return result;
 }
 
-// Function to process the input expression and calculate the result using custom stacks
-Matrix evaluateExpression(const string &expression) {
-    MatrixStack matrixStack;   // Custom stack for matrices
-    CharStack operatorStack;   // Custom stack for operators ('(' or '*')
+// Function to evaluate the matrix expression
+Matrix evaluateExpression(const char *expression) {
+    MatrixStack matrixStack;
+    CharStack operatorStack;
 
     int i = 0;
-    while (i < expression.size()) {
+    int length = strlen(expression);
+
+    while (i < length) {
         char ch = expression[i];
 
         if (ch == '[') {
             // Parse the matrix
             int start = i + 1;
-            int end = expression.find(']', start);
-            string matrixStr = expression.substr(start, end - start);
-            // cout << matrixStr << endl;
-            Matrix matrix = parseMatrix(matrixStr);
-            // matrix.print();
+            int end = start;
+            while (expression[end] != ']') {
+                end++;
+            }
+            char matrixStr[MAX_EXPR_SIZE];
+            strncpy(matrixStr, expression + start, end - start);
+            matrixStr[end - start] = '\0'; // Null-terminate the substring
+            Matrix matrix = parseMatrix(matrixStr, end - start);
             matrixStack.push(matrix);
             i = end + 1;
         } else if (ch == '(' || ch == '*') {
@@ -129,8 +137,8 @@ Matrix evaluateExpression(const string &expression) {
 
 int main() {
     // Input the matrix expression
-    string expression;
-    while (getline(cin, expression)) {
+    char expression[MAX_EXPR_SIZE];
+    while (cin.getline(expression, MAX_EXPR_SIZE)) {
         // Evaluate the expression and output the result
         Matrix result = evaluateExpression(expression);
         result.print();
