@@ -3,5 +3,7 @@
 
 ### How To Run
 ```
-source run.sh
+source runC.sh
+# or
+source runC++.sh
 ```
