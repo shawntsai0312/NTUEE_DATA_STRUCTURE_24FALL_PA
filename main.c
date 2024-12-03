@@ -6,7 +6,7 @@
 #define MAX_EXPR_SIZE 1000 // Maximum size of an expression
 
 typedef struct {
-    int a, b, c, d;
+    unsigned int a, b, c, d;
 } Matrix;
 
 void printMatrix(Matrix m) {
@@ -72,6 +72,7 @@ Matrix multiply(Matrix m1, Matrix m2) {
     result.b = m1.a * m2.b + m1.b * m2.d;
     result.c = m1.c * m2.a + m1.d * m2.c;
     result.d = m1.c * m2.b + m1.d * m2.d;
+    // printMatrix(resullt);
     return result;
 }
 
@@ -79,6 +80,7 @@ Matrix multiply(Matrix m1, Matrix m2) {
 Matrix parseMatrix(const char *matrixStr, int length) {
     Matrix result;
     sscanf(matrixStr, "%d,%d,%d,%d", &result.a, &result.b, &result.c, &result.d);
+    // printMatrix(result);
     return result;
 }
 
@@ -95,7 +97,7 @@ Matrix evaluateExpression(const char *expression) {
 
     while (i < length) {
         char ch = expression[i];
-
+        // printf(" i: %i, ch: %c\n", i, ch);
         if (ch == '[') {
             // Parse the matrix
             int start = i + 1;
@@ -119,6 +121,8 @@ Matrix evaluateExpression(const char *expression) {
                 popChar(&operatorStack);
                 Matrix m2 = popMatrix(&matrixStack);
                 Matrix m1 = popMatrix(&matrixStack);
+                // printMatrix(m2);
+                // printMatrix(m1);
                 pushMatrix(&matrixStack, multiply(m1, m2));
             }
             // Pop the '('

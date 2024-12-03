@@ -86,7 +86,7 @@ The input contains a string s with only "0-9\*,()\[\]". Following are some const
 
 The output is the martix representation in this problem, consisting of 4 numbers separated by a comma enclosed within square brackets. And print out your result.(2024/11/23 update)
 
-*   ai≤231−1, where ai is the element in the output matrix (2024/11/17 update)
+*   $a_i≤2^{31}−1$, where ai is the element in the output matrix (2024/11/17 update)
 
 ### [](#Hint "Hint")Hint
 

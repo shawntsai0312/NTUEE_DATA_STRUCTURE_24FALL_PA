@@ -7,7 +7,7 @@ using namespace std;
 #define MAX_EXPR_SIZE 1000 // Maximum size of an expression
 
 struct Matrix {
-    int a, b, c, d;
+    unsigned int a, b, c, d;
 
     void print() {
         cout << "[" << a << "," << b << "," << c << "," << d << "]" << endl;
