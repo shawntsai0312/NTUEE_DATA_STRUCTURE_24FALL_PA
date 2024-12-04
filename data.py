@@ -3,7 +3,7 @@ import sys
 
 # 生成随机矩阵
 def generate_matrix():
-    return [random.randint(0, 9) for _ in range(4)]
+    return [random.randint(0, 100) for _ in range(4)]
 
 # 格式化矩阵
 def format_matrix(matrix):
